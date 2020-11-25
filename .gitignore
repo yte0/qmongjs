@@ -25,3 +25,5 @@ dist/
 npm-debug.log
 
 .eslintcache
+
+/storybook-static
