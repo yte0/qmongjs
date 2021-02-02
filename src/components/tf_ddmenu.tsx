@@ -50,14 +50,24 @@ const DD_MENU = (props: Props) => {
       console.log(e);
     };
     image.onload = function () {
+      const titleHight: number = 100;
+      const bottomMargin: number = 50;
       const canvas = select("body")
         .append("canvas")
         .attr("width", width)
-        .attr("height", height)
+        .attr("height", height + titleHight + bottomMargin)
         .node()!;
 
       const ctx = canvas.getContext("2d");
-      ctx!.drawImage(image, 0, 0);
+      ctx!.font = "30px Arial";
+      ctx!.fillText(description.title ?? "", width * 0.05, 50);
+      ctx!.font = "17px Arial";
+      ctx!.fillText(
+        `Kilde: ${description.full_name}`,
+        width * 0.05,
+        titleHight + height + 20
+      );
+      ctx!.drawImage(image, 0, titleHight);
       const url = canvas.toDataURL("image/png");
       selectAll([canvas, image]).remove();
       const element = document.createElement("a");

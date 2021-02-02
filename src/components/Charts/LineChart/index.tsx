@@ -33,7 +33,7 @@ export interface Props {
   margin?: Margin;
 }
 
-const MARGIN = { top: 8, bottom: 34, right: 0.15, left: 0.2 };
+const MARGIN = { top: 8, bottom: 34, right: 0.15, left: 0.1 };
 
 const LineChart = (props: Props) => {
   const {
@@ -48,11 +48,13 @@ const LineChart = (props: Props) => {
   const [hoveredLegend, setHoveredLegend] = useState<string | null>(null);
   const [selectedLegends, setSelectedLegends] = useState<string[]>([]);
   const delayedZoom = useDelayInitial(zoom, false);
-  const legendContainerRef = useRef<HTMLUListElement>(null);
+  const legendContainerRef = useRef(null);
   const entry = useResizeObserver(svgContainerRef);
 
   const width = entry?.contentRect.width ?? 0;
   const height = width / 2;
+
+  const [legendHeight, setLegendHeight] = useState<number>(0);
 
   const marginOffsets = {
     top: margin.top ?? MARGIN.top,
@@ -72,9 +74,11 @@ const LineChart = (props: Props) => {
     const container = select(svgContainerRef.current);
 
     // Scales
-    const pathLabels = Array.from(new Set(data.map((d) => d.label)));
+    const pathLabels = Array.from(
+      new Set(data.map((d) => d.label))
+    ).map((d) => ({ label: d, width: 0 }));
     const lineColorScale = scaleOrdinal<string>()
-      .domain(pathLabels)
+      .domain(pathLabels.map((d) => d.label))
       .range(page_colors.chart_colors);
 
     const minYear = Math.min(...data.map((d) => d.year));
@@ -99,41 +103,95 @@ const LineChart = (props: Props) => {
     }
 
     select(legendContainerRef.current)
-      .selectAll(".legend-item")
-      .data(pathLabels)
-      .join("li")
-      .attr("class", "legend-item")
-      .text((d) => d)
-      .style("margin", "5px")
-      .style("display", "flex")
-      .style("font-size", `${7 + innerWidth * 0.01}px`)
-      .style("font-family", theme.legend_text_font_family)
-      .style("fill", theme.legend_text_fill)
-      .style("padding", "5px")
-      .style("border-bottom", (d) => `3px solid ${lineColorScale(d)}`)
-      .style("cursor", "pointer")
-      .style("opacity", (d) => {
+      .selectAll("g")
+      .data(pathLabels, (d: any) => d.label)
+      .join(
+        (enter) =>
+          enter
+            .append("g")
+            .attr("opacity", 0)
+            .attr("class", (d: { label: string }) => d.label)
+            .append("text")
+            .text((d: { label: string }) => d.label)
+            .attr("fill", theme.legend_text_fill)
+            .style("font-family", theme.legend_text_font_family)
+            .attr("dy", ".35em"),
+        (update) => update,
+        (exit) => exit.remove()
+      );
+    const nextItemPosition: { x: number; y: number } = { x: 0, y: 0 };
+
+    select(legendContainerRef.current)
+      .selectAll("g")
+      .selectAll("line")
+      .data((d: any) => {
+        return [d.label];
+      })
+      .join(
+        (enter) =>
+          enter
+            .append("line")
+            .attr("x1", "0")
+            .attr("y1", "15px")
+            .attr("y2", "15px")
+            .attr("x2", function (d: any) {
+              const curElem: any = this!;
+              const width: number = curElem.parentNode.getBoundingClientRect()
+                .width;
+              return width;
+            }),
+        (update) => update.attr("stroke", (d: any) => lineColorScale(d)),
+        (exit) => exit.remove()
+      )
+      .attr("stroke-width", "4px")
+      .attr("stroke", (d: any) => lineColorScale(d))
+      .style("stroke-linecap", "round");
+
+    select(legendContainerRef.current)
+      .selectAll("g")
+      .attr("transform", function (d, i) {
+        const curElem: any = this!;
+        const selectedElem: any = select(curElem);
+        const bbox = selectedElem.node().getBoundingClientRect();
+        const space: number = 20;
+
+        nextItemPosition.y =
+          nextItemPosition.x + bbox.width + space < innerWidth
+            ? nextItemPosition.y
+            : nextItemPosition.y + bbox.height + space;
+        nextItemPosition.x =
+          nextItemPosition.x + bbox.width + space < innerWidth
+            ? nextItemPosition.x + bbox.width + space
+            : bbox.width + space;
+
+        return `translate(${
+          nextItemPosition.x - bbox.width - space
+        }, ${nextItemPosition.y})`;
+      })
+      .attr("opacity", (d: any) => {
         if (selectedLegends.length === 0) {
           return 1;
         }
-        return selectedLegends.includes(d) ? 1 : 0.4;
+        return selectedLegends.includes(d.label) ? 1 : 0.4;
       })
-      .on("click", (_e, d) => {
-        setHoveredLegend((current) => (current === d ? null : current));
+      .style("cursor", "pointer")
+      .on("mouseover", (_e, d: any) => {
+        setHoveredLegend(d.label);
+      })
+      .on("mouseout", (_e, d: any) => {
+        setHoveredLegend((current) => (current === d.label ? null : current));
+      })
+      .on("click", (_e, d: any) => {
+        setHoveredLegend((current) => (current === d.label ? null : current));
         setSelectedLegends((selected) => {
-          if (selected.includes(d)) {
-            return selected.filter((s) => s !== d);
+          if (selected.includes(d.label)) {
+            return selected.filter((s) => s !== d.label);
           }
 
-          return [...selected, d];
+          return [...selected, d.label];
         });
-      })
-      .on("mouseover", (_e, d) => {
-        setHoveredLegend(d);
-      })
-      .on("mouseout", (_e, d) => {
-        setHoveredLegend((current) => (current === d ? null : current));
       });
+    setLegendHeight(nextItemPosition.y + 40);
 
     // Y-Axis
     const yAxisFormat =
@@ -256,28 +314,27 @@ const LineChart = (props: Props) => {
     levels,
     selectedLegends,
     svgContainerRef,
+    setLegendHeight,
   ]);
 
   return (
     <div>
-      <ul
-        ref={legendContainerRef}
-        style={{
-          display: "flex",
-          justifyContent: "flex-start",
-          flexWrap: "wrap",
-          marginLeft: "5%",
-          width: "80%",
-        }}
-      />
       <div ref={svgContainerRef}>
         <svg
           className={styles.lineChart}
-          height={marginOffsets.top + height + marginOffsets.bottom}
+          height={
+            marginOffsets.top + legendHeight + height + marginOffsets.bottom
+          }
           width={marginOffsets.left + width + marginOffsets.right}
         >
           <g
+            ref={legendContainerRef}
             transform={`translate(${marginOffsets.left}, ${marginOffsets.top})`}
+          ></g>
+          <g
+            transform={`translate(${marginOffsets.left}, ${
+              marginOffsets.top + legendHeight
+            })`}
           >
             <g className="x-axis" transform={`translate(0, ${innerHeight})`} />
             <g className="y-axis">
