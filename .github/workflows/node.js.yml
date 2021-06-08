@@ -25,16 +25,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run validate
+      - run: yarn install --immutable
+      - run: yarn run check-types
+      - run: yarn run check-format
+      - run: yarn run lint
+      - run: yarn run test:once
+      - run: yarn run build
       - name: Code coverage
         if: matrix.node-version == '14.x'
         run: |
-          npm run test:coverage
+          yarn run test:coverage
           ./node_modules/.bin/codecov --disable=gcov
       - name: Generate documentation
         if: matrix.node-version == '14.x'
-        run: npm run build-doc
+        run: yarn run build-doc
       - name: Deploy documentation to github pages
         if: ${{ matrix.node-version == '14.x' && github.event_name == 'release' }}
         uses: JamesIves/github-pages-deploy-action@4.1.0

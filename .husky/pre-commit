@@ -1,2 +1,2 @@
-npm run check-types
-npx --no-install lint-staged
+yarn run check-types
+yarn lint-staged

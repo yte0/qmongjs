@@ -27,3 +27,12 @@ npm-debug.log
 .eslintcache
 
 /storybook-static
+
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
