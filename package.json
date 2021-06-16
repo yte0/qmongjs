@@ -34,7 +34,7 @@
   "dependencies": {
     "@sentry/react": "^6.5.1",
     "@sentry/tracing": "^6.5.1",
-    "@testing-library/jest-dom": "^5.13.0",
+    "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.1.9",
     "@types/d3": "^6.7.0",
