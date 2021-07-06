@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
+import { BarChartData } from "../../components/Charts/types";
 import { API_HOST } from "../../components/RegisterPage";
-
 interface FetchDescriptionParams {
   registerShortName: string;
   type?: "ind" | "dg";
@@ -70,7 +70,7 @@ const fetchIndicators = async (params: FetchIndicatorParams) => {
 };
 
 export const useIndicatorQuery = (params: FetchIndicatorParams) => {
-  return useQuery(
+  return useQuery<BarChartData[], Error>(
     [params.queryKey, params.registerShortName, params.context, params.type],
     () => fetchIndicators(params),
     {

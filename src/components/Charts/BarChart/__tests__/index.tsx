@@ -16,6 +16,42 @@ import { clockTick } from "../../../../test/clockTick";
 jest.mock("../../../../helpers/hooks");
 jest.mock("../../../../utils/useDelayInitial");
 
+test("Bar have labels with value in %", async () => {
+  const WIDTH = 500;
+  (useResizeObserver as jest.Mock).mockReturnValue({
+    contentRect: {
+      width: WIDTH,
+    },
+  });
+  const data = [
+    { label: "a", value: 1 },
+    { label: "b", value: 0.15 },
+    { label: "c", value: 0.3 },
+    { label: "d", value: 0.1 },
+  ];
+  render(
+    <BarChartWithRef
+      showLevel={true}
+      data={data}
+      levels={[
+        { level: "high", start: 0.5, end: 0 },
+        { level: "mid", start: 0.9, end: 0.5 },
+        { level: "low", start: 1, end: 0.9 },
+      ]}
+      zoom={false}
+      margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+    />
+  );
+
+  await clockTick(1500);
+
+  for (const dataPoint of data) {
+    const bar = screen.getByTestId(`bar-label-${dataPoint.label}`);
+    const valueInPct = Math.round((dataPoint.value * 100 * 100) / 100) + "%";
+    expect(bar.textContent).toBe(valueInPct);
+  }
+});
+
 test("Bar widths are correct", async () => {
   const WIDTH = 500;
   (useResizeObserver as jest.Mock).mockReturnValue({

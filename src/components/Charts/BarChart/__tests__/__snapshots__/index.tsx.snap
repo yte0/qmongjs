@@ -273,6 +273,54 @@ exports[`Render with levels @250px 1`] = `
             y="115.11627906976743"
           />
         </g>
+        <g
+          class="labels"
+        >
+          <text
+            class="label"
+            data-testid="bar-label-a"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="25.674418604651155"
+          >
+            100%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-b"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="60.55813953488371"
+          >
+            15%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-c"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="95.44186046511626"
+          >
+            30%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-d"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="130.32558139534882"
+          >
+            10%
+          </text>
+        </g>
       </g>
     </svg>
   </div>
@@ -551,6 +599,54 @@ exports[`Render with levels @500px 1`] = `
             x="0"
             y="115.11627906976743"
           />
+        </g>
+        <g
+          class="labels"
+        >
+          <text
+            class="label"
+            data-testid="bar-label-a"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="25.674418604651155"
+          >
+            100%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-b"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="60.55813953488371"
+          >
+            15%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-c"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="95.44186046511626"
+          >
+            30%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-d"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="130.32558139534882"
+          >
+            10%
+          </text>
         </g>
       </g>
     </svg>
@@ -831,6 +927,54 @@ exports[`Render with levels reversed @500px 1`] = `
             y="115.11627906976743"
           />
         </g>
+        <g
+          class="labels"
+        >
+          <text
+            class="label"
+            data-testid="bar-label-a"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="25.674418604651155"
+          >
+            100%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-b"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="60.55813953488371"
+          >
+            15%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-c"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="95.44186046511626"
+          >
+            30%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-d"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="130.32558139534882"
+          >
+            10%
+          </text>
+        </g>
       </g>
     </svg>
   </div>
@@ -1079,6 +1223,54 @@ exports[`Render without levels @250px 1`] = `
             y="115.11627906976743"
           />
         </g>
+        <g
+          class="labels"
+        >
+          <text
+            class="label"
+            data-testid="bar-label-a"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="25.674418604651155"
+          >
+            100%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-b"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="60.55813953488371"
+          >
+            15%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-c"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="95.44186046511626"
+          >
+            30%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-d"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="130.32558139534882"
+          >
+            10%
+          </text>
+        </g>
       </g>
     </svg>
   </div>
@@ -1326,6 +1518,54 @@ exports[`Render without levels @500px 1`] = `
             x="0"
             y="115.11627906976743"
           />
+        </g>
+        <g
+          class="labels"
+        >
+          <text
+            class="label"
+            data-testid="bar-label-a"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="25.674418604651155"
+          >
+            100%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-b"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="60.55813953488371"
+          >
+            15%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-c"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="95.44186046511626"
+          >
+            30%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-d"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="130.32558139534882"
+          >
+            10%
+          </text>
         </g>
       </g>
     </svg>
@@ -1623,6 +1863,54 @@ exports[`Render zoomed with levels @500px 1`] = `
             x="0"
             y="115.11627906976743"
           />
+        </g>
+        <g
+          class="labels"
+        >
+          <text
+            class="label"
+            data-testid="bar-label-a"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="25.674418604651155"
+          >
+            50%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-b"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="60.55813953488371"
+          >
+            15%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-c"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="95.44186046511626"
+          >
+            30%
+          </text>
+          <text
+            class="label"
+            data-testid="bar-label-d"
+            font-size="0.7em"
+            opacity="0.3"
+            text-anchor="middle"
+            x="0"
+            y="130.32558139534882"
+          >
+            10%
+          </text>
         </g>
       </g>
     </svg>

@@ -33,11 +33,13 @@ export default Chart;
 
 const GetBarChart: React.FC<Props> = (props) => {
   const { description, indicatorData, treatmentYear } = props;
-
   const queryClient = useQueryClient();
-
   const registerShortName = description.rname ?? "";
-  const barIndDataQuery: UseQueryResult<any, unknown> = useIndicatorQuery({
+  const {
+    isLoading,
+    error,
+    data: indQryData,
+  } = useIndicatorQuery({
     queryKey: `indicatorDataBarChart`,
     registerShortName: registerShortName,
     unitLevel: "hospital",
@@ -45,6 +47,7 @@ const GetBarChart: React.FC<Props> = (props) => {
     context: props.context.context,
     type: props.context.type,
   });
+
   const refetch = useCallback(() => {
     return queryClient.fetchQuery([
       "indicatorDataBarChart",
@@ -63,41 +66,46 @@ const GetBarChart: React.FC<Props> = (props) => {
     refetch();
   }, [refetch, treatmentYear, props.context.context, props.context.type]);
 
-  const selectedIndData = [...indicatorData].filter(
-    (d) => d.unit_level !== "hospital"
-  );
+  if (isLoading) return <>Loading...</>;
+  if (error) return <>An error has occured: {error.message}</>;
 
-  const barChartData = [...(barIndDataQuery.data ?? []), ...selectedIndData];
-
-  const unitNames = props.selectedTreatmentUnits;
-  const data = barChartData
-    .filter(
-      (data: StatisticData) =>
-        !(
-          data.ind_id !== props.description.id ||
-          ((data.dg ?? 1) < 0.6 && data.unit_name !== "Nasjonalt") ||
-          data.denominator < (description.min_denominator ?? 5)
-        )
-    )
-    .map((data: StatisticData) => {
-      const style: BarStyle = {};
-      if (data.unit_name === "Nasjonalt") {
-        style.color = "#00263D";
-      } else {
-        style.color = "#7EBEC7";
-        if (props.selectedTreatmentUnits.length > 1) {
-          style.opacity = unitNames.includes(data.unit_name) ? 1 : 0.5;
+  const filterData = (data: StatisticData[]) => {
+    const filtered = data
+      .filter(
+        (data: StatisticData) =>
+          !(
+            data.ind_id !== props.description.id ||
+            ((data.dg ?? 1) < 0.6 && data.unit_name !== "Nasjonalt") ||
+            data.denominator < (description.min_denominator ?? 5)
+          )
+      )
+      .map((data: StatisticData) => {
+        const style: BarStyle = {};
+        if (data.unit_name === "Nasjonalt") {
+          style.color = "#00263D";
+        } else {
+          style.color = "#7EBEC7";
+          if (props.selectedTreatmentUnits.length > 1) {
+            style.opacity = unitNames.includes(data.unit_name) ? 1 : 0.5;
+          }
         }
-      }
-      return {
-        label: data.unit_name,
-        value: data.var,
-        style,
-      };
-    })
-    .sort((a: Bar, b: Bar) => b.value - a.value);
+        return {
+          label: data.unit_name,
+          value: data.var,
+          style,
+        };
+      })
+      .sort((a: Bar, b: Bar) => b.value - a.value);
+    return filtered ?? [];
+  };
 
-  return <BarChart {...props} data={data ?? []} />;
+  const nasjonaltIndData = [...indicatorData].filter(
+    (d) => d.unit_name === "Nasjonalt"
+  );
+  const barChartData = [...(indQryData ?? []), ...nasjonaltIndData];
+  const unitNames = props.selectedTreatmentUnits;
+
+  return <BarChart {...props} data={filterData(barChartData)} />;
 };
 
 const GetLineChart: React.FC<Props> = (props) => {
