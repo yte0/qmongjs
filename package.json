@@ -83,7 +83,7 @@
     "@types/node": "^16.3.3",
     "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.8",
-    "@types/react-router-dom": "^5.1.7",
+    "@types/react-router-dom": "^5.1.8",
     "@types/react-select": "^4.0.16",
     "codecov": "^3.8.3",
     "faker": "^5.5.3",
